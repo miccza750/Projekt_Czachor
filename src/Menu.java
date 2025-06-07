@@ -17,6 +17,8 @@ public class Menu {
     }
 
     public void start(){
+        SesjaLogowania sesja = new SesjaLogowania();
+        sesja.login();
         while(true){
             String[] opcje = {"Dodaj użytkownika",""};
             Scanner scanner = new Scanner(System.in);
