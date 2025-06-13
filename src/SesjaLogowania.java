@@ -13,13 +13,14 @@ public class SesjaLogowania {
     public SesjaLogowania() {
         this.permisja = Permisja.BRAK;
     }
-
+    //czy haslo jest poprawne dla podanego loginu
     public boolean czyWLiscie(String login, String haslo) {
         if (listaKont.containsKey(login)) {
             return listaKont.get(login).equals(haslo);
         }
         return false;
     }
+    // czy login instnieje
     public boolean czyLoginWLiscie(String login){
         return listaKont.containsKey(login);
     }
@@ -38,8 +39,9 @@ public class SesjaLogowania {
                 System.out.println("brak w bazie loginu: " + login);
             }
     }
+    // zapis listaKont do pliku
     public void zapiszDoPliku() {
-        try (FileWriter zapis = new FileWriter("C:\\Users\\pokel\\Desktop\\Projekt_Czachor\\src\\Konta.txt")) {
+        try (FileWriter zapis = new FileWriter("resources\\Konta.txt")) {
             for (String login : listaKont.keySet()) {
                 String haslo = listaKont.get(login);
                 zapis.write(login + "|" + haslo + "\n");
@@ -55,9 +57,10 @@ public class SesjaLogowania {
         }
         zapiszDoPliku();
     }
+    // odczyt kont
     public void odczytZPliku(){
         try {
-            File plik = new File("C:\\Users\\pokel\\Desktop\\Projekt_Czachor\\src\\Konta.txt");
+            File plik = new File("resources\\Konta.txt");
             Scanner odczyt = new Scanner(plik);
             while (odczyt.hasNextLine()) {
                 String linia = odczyt.nextLine();
@@ -69,6 +72,7 @@ public class SesjaLogowania {
             e.printStackTrace();
         }
     }
+    //sesja logowania
     public boolean login(){
         while(true){
             Scanner scanner = new Scanner(System.in);

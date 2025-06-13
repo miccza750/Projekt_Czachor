@@ -4,8 +4,7 @@ import java.util.Scanner;
 
 public class Menu {
     Scanner scanner = new Scanner(System.in);
-
-    public static String[] opcjePracownika = {"Dodaj użytkownika","Usuń użytkownika","Zmień dane użytkownika","Wyjście z programu","Wyloguj"};
+    public static String[] opcjePracownika = {"Usuń użytkownika","Dodaj użytkownika","Zmień dane użytkownika","Wyjście z programu","Wyloguj"};
     public static String[] opcjeAdmina = {"Usuń pracownika","Dodaj pracownika","Zmień hasło swoje lub pracownika","Panel pracownika","Wyloguj"};
 
     public SesjaLogowania sesja = new SesjaLogowania();
@@ -49,7 +48,7 @@ public class Menu {
             wyswietl_opcje(opcjeAdmina);
             try {
                 int wyjscie = scanner.nextInt();
-                wyswietl_wybrana_opcje(wyjscie, opcjeAdmina[wyjscie]);
+                wyswietl_wybrana_opcje(wyjscie, opcjeAdmina[wyjscie-1]);
                 switch (wyjscie) {
                     case 1:
                         System.out.println("podaj login pracownika do usunięcia: ");
@@ -95,13 +94,29 @@ public class Menu {
             wyswietl_opcje(opcjePracownika);
             try {
                 int wyjscie = scanner.nextInt();
-                wyswietl_wybrana_opcje(wyjscie, opcjePracownika[wyjscie]);
+                wyswietl_wybrana_opcje(wyjscie, opcjePracownika[wyjscie-1]);
                 switch (wyjscie) {
+                    //usuwanie użytkownika
                     case 1:
+                        System.out.println("podaj imie: ");
+                        //Uzytkownicy.dodajUzytkownika();
+                        break;
+                    //dodawanie użytkownika
+                    case 2:
                         System.out.println("podaj");
                         break;
-                    default:
-                        System.out.println("bład");
+                    //usuwanie użytkownika
+                    case 3:
+                        System.out.println("podaj");
+                        break;
+                    //usuwanie użytkownika
+                    case 4:
+                        System.out.println("podaj");
+                        break;
+                    //usuwanie użytkownika
+                    case 5:
+                        System.out.println("podaj");
+                        break;
                 }
             }
             catch (InputMismatchException | ArrayIndexOutOfBoundsException e){
