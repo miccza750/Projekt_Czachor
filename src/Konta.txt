@@ -1,2 +1,4 @@
-admin|admin
-pracownik|pracownik
+pracownik|pracownik1
+admin|admin1
+pracownikAdmin|adminP
+pracownik2|pracownik2

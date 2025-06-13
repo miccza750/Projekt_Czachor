@@ -1,24 +1,61 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class SesjaLogowania {
     public Permisja permisja;
+    public String loginUzytkownika;
     private static final HashMap<String,String> listaKont = new HashMap<>();
 
     public SesjaLogowania() {
         this.permisja = Permisja.BRAK;
     }
 
-    public static boolean czyWLiscie(String login, String haslo) {
+    public boolean czyWLiscie(String login, String haslo) {
         if (listaKont.containsKey(login)) {
             return listaKont.get(login).equals(haslo);
         }
         return false;
     }
-
-    public boolean login(){
+    public boolean czyLoginWLiscie(String login){
+        return listaKont.containsKey(login);
+    }
+    public void dodajPracownika(String login,String haslo){
+        listaKont.put(login,haslo);
+        this.zapiszDoPliku();
+    }
+    public void usunPracownika(String login) throws UsuniecieAdmina{
+            if (listaKont.containsKey(login)) {
+                if(login.equals("admin")){
+                    throw new UsuniecieAdmina("Admina nie można usunąć!");
+                }
+                listaKont.remove(login);
+                System.out.println("Użytkownik '" + login + "' został usunięty.");
+            } else {
+                System.out.println("brak w bazie loginu: " + login);
+            }
+    }
+    public void zapiszDoPliku() {
+        try (FileWriter zapis = new FileWriter("C:\\Users\\pokel\\Desktop\\Projekt_Czachor\\src\\Konta.txt")) {
+            for (String login : listaKont.keySet()) {
+                String haslo = listaKont.get(login);
+                zapis.write(login + "|" + haslo + "\n");
+            }
+            System.out.println("Zapisano zmiany!");
+        } catch (IOException e) {
+            System.out.println("Błąd pliku: " + e.getMessage());
+        }
+    }
+    public void zmianaHasla(String login,String haslo){
+        if (listaKont.containsKey(login)) {
+            listaKont.put(login, haslo);
+        }
+        zapiszDoPliku();
+    }
+    public void odczytZPliku(){
         try {
             File plik = new File("C:\\Users\\pokel\\Desktop\\Projekt_Czachor\\src\\Konta.txt");
             Scanner odczyt = new Scanner(plik);
@@ -27,10 +64,12 @@ public class SesjaLogowania {
                 listaKont.put(linia.split("\\|")[0],linia.split("\\|")[1]);
             }
         }
-            catch (FileNotFoundException e) {
-                System.out.println("błąd pliku Konto.txt");
-                e.printStackTrace();
-            }
+        catch (FileNotFoundException e) {
+            System.out.println("błąd pliku Konto.txt");
+            e.printStackTrace();
+        }
+    }
+    public boolean login(){
         while(true){
             Scanner scanner = new Scanner(System.in);
             System.out.println("Podaj login: ");
@@ -39,10 +78,13 @@ public class SesjaLogowania {
             String haslo = scanner.next();
             System.out.println("Sprawdzanie prawidłowości loginu i hasła...");
             if(czyWLiscie(login,haslo)){
+                loginUzytkownika = login;
+                System.out.println("Zalogowano poprawnie.");
                 if(login.equals("admin")){
                     permisja = Permisja.ADMIN;
+                    return true;
                 }
-                System.out.println("Zalogowano poprawnie.");
+                permisja = Permisja.PRACOWNIK;
                 return true;
             }else{
                 System.out.println("Nieprawidłowy login lub hasło, spróbuj ponownie.");
