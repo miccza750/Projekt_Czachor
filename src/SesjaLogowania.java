@@ -20,11 +20,14 @@ public class SesjaLogowania {
         }
         return false;
     }
-    // czy login instnieje
+    //czy login instnieje
     public boolean czyLoginWLiscie(String login){
         return listaKont.containsKey(login);
     }
-    public void dodajPracownika(String login,String haslo){
+    public void dodajPracownika(String login,String haslo) throws UsuniecieAdmina{
+        if(login.equals("admin")){
+            throw new UsuniecieAdmina("Admina nie można dodawać!");
+        }
         listaKont.put(login,haslo);
         this.zapiszDoPliku();
     }
@@ -35,6 +38,7 @@ public class SesjaLogowania {
                 }
                 listaKont.remove(login);
                 System.out.println("Użytkownik '" + login + "' został usunięty.");
+                zapiszDoPliku();
             } else {
                 System.out.println("brak w bazie loginu: " + login);
             }

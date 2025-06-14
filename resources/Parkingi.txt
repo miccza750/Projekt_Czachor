@@ -1,0 +1,8 @@
+1|P|Parking Nowy Świat|1|78
+2|K|Kemping Mazury|50|1|92
+3|P|Parking Centrum|200|66
+4|K|Kemping Leśny|30|10|59
+5|P|Parking Lotnisko|500|81
+6|K|Kemping Słoneczny Brzeg|80|40|74
+7|P|Parking Galeria|150|53
+8|K|Kemping Pod Sosnami|40|15|89

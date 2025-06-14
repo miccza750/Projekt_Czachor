@@ -2,23 +2,26 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Kemping extends Parking implements ZarzadzanieParkingiem{
-    public Kemping(int ilosc_miejsc, boolean calo_dobowy) {
-        super(ilosc_miejsc, calo_dobowy);
+public class Kemping extends Parking {
+    int miejscaZElektryka;
+
+    public Kemping(String idParkingu, String nazwa, String iloscMiejsc, String miejscaZElektryka, String cenaZaDzien) {
+        super(idParkingu,nazwa, iloscMiejsc,cenaZaDzien);
+        this.miejscaZElektryka = Integer.parseInt(miejscaZElektryka);
+    }
+    public String formatDoPliku() {
+        return idParkingu+"|K|"+nazwa+"|"+iloscMiejsc+"|"+miejscaZElektryka+"\n";
     }
 
     @Override
-    public void dodajMiejsce(String rodzaj) {
-
+    public String toString() {
+        return
+                "Id Parkingu: " + idParkingu + ", Nazwa: " + nazwa +
+                ", Ilość Miejsc: " + iloscMiejsc +
+                ", Miejsca Z Elektryką: " + miejscaZElektryka +", cena za dzień: " +cenaZaDzien;
     }
 
-    @Override
-    public void usunMiejsce(int id) {
-
-    }
-
-    @Override
-    public void pokazWszystkieMiejsca() {
-
+    public int getMiejscaZElektryka() {
+        return miejscaZElektryka;
     }
 }

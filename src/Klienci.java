@@ -7,14 +7,15 @@ import java.util.Scanner;
 
 public class Klienci {
     public static ArrayList<Konto> listaKontKlientow = new ArrayList<>();
-    public static ArrayList<Parking> listaParkingow = new ArrayList<>();
     public void wczytajKlientow(){
         try {
             File plik = new File("resources\\Klienci.txt");
             Scanner odczyt = new Scanner(plik);
             while (odczyt.hasNextLine()) {
                 String linia = odczyt.nextLine();
-                Konto kontoO = new Konto(linia.split("\\|")[0],linia.split("\\|")[1],linia.split("\\|")[2]);
+                if (linia.isEmpty()) continue;
+                String[] listaK = linia.split("\\|");
+                Konto kontoO = new Konto(listaK[0],listaK[1],listaK[2],listaK[3]);
                 listaKontKlientow.add(kontoO);
             }
         }
@@ -26,11 +27,20 @@ public class Klienci {
     public void dodajKlienta(String imie, String nazwisko, String email){
         Konto kontoDoDodania = new Konto(imie, nazwisko, email);
         listaKontKlientow.add(kontoDoDodania);
+        zapiszDoPliku();
     }
-    public void zapiszKlientow(){
-        try (FileWriter zapis = new FileWriter("resources\\Konta.txt")) {
+    public void usunKlienta(int id){
+        for (Konto konto : listaKontKlientow) {
+            if(konto.getId()==id) {
+                listaKontKlientow.remove(konto);
+            }
+        }
+        zapiszDoPliku();
+    }
+    public void zapiszDoPliku() {
+        try (FileWriter zapis = new FileWriter("resources\\Klienci.txt")) {
             for (Konto konto : listaKontKlientow) {
-                zapis.write(konto.toString());
+                zapis.write(konto.formatDoPliku());
             }
             System.out.println("Zapisano zmiany!");
         } catch (IOException e) {
@@ -38,23 +48,41 @@ public class Klienci {
         }
     }
     public void wyswietlKlientow(){
+        System.out.println("Ilość klientów: " + listaKontKlientow.size());
         for (Konto klient : listaKontKlientow){
-            System.out.println(klient.toString());
+            klient.pokazDane();
         }
     }
-    public void wczytajParkingi(){
-        try {
-            File plik = new File("resources\\Parkingi.txt");
-            Scanner odczyt = new Scanner(plik);
-            while (odczyt.hasNextLine()) {
-                String linia = odczyt.nextLine();
-                Parking parking = new Parking(linia.split("\\|")[0],linia.split("\\|")[1],linia.split("\\|")[2]);
-                listaParkingow.add(parking);
+    public boolean czyWLiscie(int id){
+        for (Konto konto : listaKontKlientow){
+            if(konto.getId() == id){
+                return true;
             }
         }
-        catch (FileNotFoundException e) {
-            System.out.println("błąd pliku Parkingi.txt");
-            e.printStackTrace();
+        return false;
+    }
+    public void zmianaImienia(int id, String imie){
+        for (Konto konto : listaKontKlientow) {
+            if(konto.getId()==id) {
+                konto.setImie(imie);
+            }
         }
+        zapiszDoPliku();
+    }
+    public void zmianaNazwiska(int id, String nazwisko){
+        for (Konto konto : listaKontKlientow) {
+            if(konto.getId()==id) {
+                konto.setImie(nazwisko);
+            }
+        }
+        zapiszDoPliku();
+    }
+    public void zmianaEmaila(int id, String email){
+        for (Konto konto : listaKontKlientow) {
+            if(konto.getId()==id) {
+                konto.setImie(email);
+            }
+        }
+        zapiszDoPliku();
     }
 }
